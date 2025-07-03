@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lec-1</title>
+
+    <style>
+        body
+        {
+            background-color: black;
+            color: red;
+        }
+        .line1
+        {
+            color: rgb(255, 0, 0);
+        }
+
+        
+
+    </style>
+</head>
+<body>
+
+        <div class="line1">
+            <!-- content added through react -->
+        </div>
+
+        <div class="line2">
+             <!-- content added through react -->
+        </div>
+        
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <!-- 
+        why do i write crossorigin?
+        The crossorigin attribute tells the browser how to handle requests for resources (like JS files) that come from a different origin (i.e., domain, protocol, or port) than your webpage.
+        That’s a cross-origin request because:
+
+        Your site is suryam.com
+
+        You're requesting a file from unpkg.com (another domain) -->
+
+
+
+        <script src="/Lec-1/app.js"> 
+        // would writing crossorigin here give error ? 
+        //  Would writing crossorigin in a local script give an error?
+        // ❌ No, it won't give an error, but it's unnecessary and ignored.
+        </script>
+ 
+</body>
+</html>
