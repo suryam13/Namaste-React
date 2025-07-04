@@ -180,7 +180,7 @@ The dist folder stands for “distribution” — it contains the final output o
 ✅ In simple words:
 The dist folder is where Parcel puts your built and optimized files.
 
-parcel-cache amd dist can be regenerated so no need to push to github
+parcel-cache amd dist can be regenerated so no need to push to github,because when we do npx parcel build index.html it gets generated
 
 how can i add browser compatibility in package.json ?
   "browserlists":[
