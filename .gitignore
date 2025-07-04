@@ -1,0 +1,4 @@
+# Global ignore for all node_modules
+**/node_modules/
+**/.parcel-cache/
+**/dist/

@@ -1,0 +1,190 @@
+correct to way attach js file
+<script src="./app.js"></script>
+dont add Lec-02/app.js ❌
+
+Parcel conflicts with the main:"index.js" in the package.json so remove it no need as we directly do 
+npx parcel index.html
+
+package.json is configuration for npm 
+package-lock.json keeps the record of exact versions of the dependencies installed and locks it
+As long as package-lock.json is present, it locks the exact versions, so even if package.json allows newer versions (via ^ or ~), they won’t be installed automatically.
+
+when is pacakage.json created ?
+it gets created when we do npm init,as package.json is the configuration file for npm 
+
+when is pacakage-lock.json created ?
+when we install at least one dependency or package
+
+"parcel": "^2.15.4"
+^ sign is called as caret it automatically updates the minor version if in future if it is proposed
+This allows versions:
+✅ 2.15.5
+✅ 2.16.0
+❌ 3.0.0 ← major version change not allowed
+✅ Minor + Patch
+
+
+~ sign is called tilde and it is responsible for automatically upgrading the patch updates
+🔒 Use this when you want to avoid any automatic minor or major updates.
+"parcel": "~2.15.4"
+This allows versions:
+✅ 2.15.5
+❌ 2.16.0
+❌ 3.0.0
+
+. No symbol (exact version)
+"parcel": "2.15.4"
+➤ Locks to exactly that version. No updates allowed unless manually changed.
+
+None of the following (~, ^, or no symbol) will ever automatically upgrade to a major version.
+That’s by design — because major updates can break things (they often contain breaking changes).
+
+You must manually update the version in your package.json or run:
+npm install parcel@latest
+
+
+node modules folder consists of the actual data or code of the installed dependencies that we wish to use in the application.
+The node_modules directory contains the actual code and files for all the installed dependencies (and their sub-dependencies) listed in your package.json.
+
+“I just installed ONE package, so why did it install SO MANY folders in node_modules?”
+Because the package you installed has dependencies of its own, and those dependencies also have their own dependencies — forming a dependency tree.This is called transitive dependencies.
+
+Like the main file which has package.json others too in the node modules would be having their own package.json,but not package-lock.json because its created just once for the root folder 
+
+
+❓ So you're asking:
+If I install mongoose, does it get newly added to node_modules, or is it already there by default?
+
+✅ Answer:
+No, mongoose is not present by default.
+It only gets added to node_modules when you explicitly install it.
+
+
+Should i push node_modules on the production?
+no,becuase it is a bulky file and if we have package and package-lock we can generate the same over there
+when i do npm i again after deleting node_modules
+NPM will automatically detect what needs to go inside the node_modules folder by looking at:package-lock.json and 
+
+❓ If package-lock.json has exact versions, then why do we still need package.json?
+✅ Short Answer:
+Because package.json is your project manifest — it’s what defines your app's identity, scripts, dependencies, and what others rely on to understand and install your project.
+
+npm doesn't stands for node package manager as per the official website but it is a package manager
+
+npm is nothing but a package manager which will manage all the packages that we install,it is a very big thing,all types of packages are hosted over here we can directly install and use,the management thing would be done by npm.
+
+dependencies are the packages on which our application is dependent on so in a context packages and dependencies are one and the same
+
+What is a bundler?
+Before sending our code to the production many things needs to be cleared and need to be made compact and to be minified because there exists 1000's of file in unorganised manner.The job of bundler is to bundle up the components collectively so that it can go into the production.It generally packages the app so that it can be shipped to the production
+
+eg : vite,parcel,webpack
+
+
+HOW TO INSTALL NPM ?
+npm init 
+
+HOW TO INSTALL PARCEL ?
+npm i -D parcel  (dev dependency)
+
+Types of Dependencies :
+There are normal dependencies which are essential int the production so we install it as a main dependency and then there is dev dependencies which are required just in the development phase and has no use in the production se we install it as a dev dependency
+
+
+HOW TO START THE DEVELOPMENT SERVER ?
+
+NPM V/S NPX
+
+| `npm` | 📦 "I want to **install and manage thispackage"                             |
+| `npx` | 🚀 "I want to **run this package temporarily** without installing it globally" |
+
+CMD : npx parcel index.html
+
+Reads your index.html
+Follows all linked scripts, styles, assets
+Bundles and optimizes them
+Starts a development server by default (e.g., http://localhost:1234)
+Automatically refreshes the browser when files change
+
+Using cdn is not a good way to use react because it comes form different origin,it is always better to have it in node_modules so that the tracking of versions becomes easier
+
+
+install react and react-dom
+npm i react
+npm i react-dom
+
+so now i will delete the cdn links and at the top in js write 
+import React from "react";
+import ReactDOM from "react-dom/client";
+
+'React' is a variable name which we gave and "react" is the folder which is present inside the node modules
+
+but even after doing so i would get the error because normal JS doesnt has any import or export 
+so i have to explicity write type="module"
+<script type="module" src="./app.js"></script>
+
+optional sometimes occurs :
+one more thing every time i update the code it doesnt gets executed untill i delete the cache folder
+so always run
+npx parcel index.html --no-cache
+
+STEPS FOR MAKING REACT PROJECT WITH PARCEL
+
+Commands :
+
+npm i (if node_modules is deleteed then can get it back,it looks at the package-lock.json and then pacakage.json if the lock doesnt exist)
+npm init
+npm i react
+npm i react-dom
+npm i -D parcel
+npx parcel index.html
+npx parcel index.html --no-cache (rare use)
+dev build:
+npx parcel index.html
+production build:
+npx parcel build index.html
+
+<script type="module" src="./app.js"></script> (in index.html)
+import React from "react";
+import ReactDOM from "react-dom/client";
+
+
+PARCEL SPECIFICATIONS :
+Parcel does HMR (Hot Module Replacement)
+Parcel keeps a track of changes and rebuilds again 
+Parcel uses file watching algorithm whch is written in C++
+Paarcel uses caching,if we delete the cache files then it will take a bit more time 495ms but after the first build it caches and after the subsequent changes are made then it takes 4ms.
+Image Optimization
+Differential Bundling - to support different older browsers
+Dev build
+Tree Shaking : removes unused code in the application to minify
+Also parcel can provide us with HTTPs
+
+All this makes the react app beast not because of solely react but because of this bundlers and pacakages / dependencies
+
+
+When we are done with the development part we try to minify this and make it ready for the production 
+
+initially it contains development build but when we execute this line it contains production build the final minified and bundled code
+
+dev build:
+npx parcel index.html
+
+production build:
+npx parcel build index.html
+
+all goes in the dist folder
+🗂️ What is the dist folder in Parcel?
+The dist folder stands for “distribution” — it contains the final output of your bundled project that is ready to be deployed or used in production.
+
+✅ In simple words:
+The dist folder is where Parcel puts your built and optimized files.
+
+parcel-cache amd dist can be regenerated so no need to push to github
+
+how can i add browser compatibility in package.json ?
+  "browserlists":[
+    "last 2 versions"
+  ]
+
+as we increase the compatibility to cover more percentage of users our bundle size increases,so we have to be aware of our need to avoid any unnecessary processings.
