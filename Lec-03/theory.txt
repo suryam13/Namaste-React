@@ -1,0 +1,161 @@
+building scripts :
+"scripts": {
+    "test": "jest",
+    "start" : "parcel index.html",
+    "build" : "parcel build index.html"
+  },
+
+use npm run start (for development build)
+use npm run build (for production build)
+
+There are three special keywords in npm scripts that have shorthand commands — meaning you can run them without using npm run.
+start,stop,test
+
+
+JSX is not a part of react,we can write react with core syntax too.
+But to make the process more easier and to increaser the readibility we create elments using JSX.
+JSX is not html in javascript,instead its html/xml like syntax.
+How can u prove this ?
+because in jsx i cannot write simply class="" as i could do in html and every attribute has to be written in camelCase and over here it is className as class is reserved keyword in JS
+JSX stands for Javascript XML.
+
+Who does the transpilation?
+🔧 Babel is responsible for transpiling JSX.
+JSX is not valid JavaScript on its own — browsers cannot understand it.
+So we need Babel, a JavaScript transpiler, to convert JSX into plain JavaScript (which browsers can run).
+
+whenever JSX is present, Babel comes into play ✅ for conversion 
+
+✅ Is it Babel or Parcel that transpiles JSX?
+🟢 Babel transpiles JSX
+🔵 Parcel uses Babel under the hood
+
+What is JSX ?
+You write HTML-like code inside JavaScript, and Babel compiles it to React.createElement() calls behind the scenes which ultimately turns that into JS Object.
+Babel is transpiler which converts code of same language from one version to another,like ES6 arrow functions to normal functions for browser compatibility.
+
+if u are writing JSX in single line then no problem but if writing in multi-line then assure that it is been wrapped inside ()
+
+Can you use JSX without React?
+Yes, but it requires extra setup:
+You must use a tool like Babel
+
+❓ If JSX is not JavaScript, then why can’t we use class in it?
+You're right that JSX is not plain JavaScript, but:
+JSX is embedded inside JavaScript, and eventually it gets converted into JavaScript using Babel.
+so we have to write className instead of class
+
+What is XML?
+XML (eXtensible Markup Language) is a markup language used to store, structure, and transport data.
+It looks like HTML but does not have predefined tags — you define your own tags to describe your data.
+
+eg : 
+<student>
+  <name>Suryam</name>
+  <age>21</age>
+  <course>Computer Science</course>
+</student>
+
+
+COMPONENTS IN REACT :
+
+Everything in react is a component may it be a card or a header or a footer.
+1.Class Based Component - Old Way (neglected to use)
+2.Functional Component - New Way
+
+React Functional Component :
+
+Always name it with a capital letter else error,its a react way to understand component.
+It is a normal JS function which returns JSX
+
+///A function which returns JSX code is said to be a functional component,in other words a function which returns react element is a functional component
+
+const HeadingComponent = () => {return <h1> This is a functional component</h1>}
+
+//JSX is nothing but a syntactic sugar,at the end of the day it is nothing but a react element
+
+//JSX Syntax
+const HeadingComponent = () => {
+return <h1> This is a functional component</h1>
+}
+
+//react element format
+const HeadingComponent = () => {
+  return React.createElement("h1", null, "This is a functional component");
+};
+
+
+IF FUNCTIONAL COMPONENT RETURNS JSX AND THE NORMAL VARIABLE WHICH HOLDS JSX, WHAT'S THE DIFFERENCE BETWEEN THEM ? ONE RETURNS JSX AND ONE DIRECTLY STORES JSX,CANT THIS BE USED AS FUNCTIONAL COMPONENT ???
+
+What if i write both the methods name as capital would it be considered then ?
+
+const HeadingComponent = () => {return <h1> This is a functional component</h1>}
+
+const jsEle = <h3 className='h1'> this is a JSX,which is been transpiled by Babel </h3>
+
+Even though the name starts with a capital letter, React treats anything in JSX tags like <Something /> as a component, so:
+It tries to call MyJSX as a function
+But MyJSX is a JSX element, not a function
+So you get an error like:
+❗ "MyJSX is not a function"
+
+How to render a functional component ?
+root.render( <HeadingComponent /> )
+//here babel comes and converts the jsx into object then it is rendered into suitable html tag by react-DOM  
+
+How to add one component in other 
+const HeadingComponent = () => <> <h1> This is a functional component</h1> <AlternateComponent /> </>
+This is called as Component Composition.
+
+if there are multiple sibilings then wrap it within fragment <> </> or div
+
+
+let val = 1000; or any expression {5+3}
+i can add this using {} anywhere in JSX
+even i can console.log anything in this,any js expression can be written here
+✅ Yes, the {} curly braces in JSX are used to insert any JavaScript expression, including variables, function calls, conditional logic, and more — but only inside JSX, not in regular JavaScript.
+
+const HeadingComponent = () => {return <h1> This is a {val} functional component</h1>}
+
+How can i add reactElement inside functional component ?
+at the end of the day that element is a object which is stored in variable so we can directly use as {jsELe}
+
+
+similiarly we can add any reactElement inside reactElement  
+similiarly we can add any reactElement inside functional Component
+similiarly we can add any functional Component inside reactElement
+similiarly we can add any functional Component inside functional Component
+
+for functional component : <Component/> OR  <Component> </Component> OR {Component()}
+for reactElement : <element> 
+
+<Component/> and  <Component> </Component> is same we can write either of this.
+
+"If we can inject variables into JSX so easily, and those variables come from an API (possibly with malicious content like <script> tags), won't that lead to XSS (Cross-Site Scripting)?"
+
+No — JSX is safe by default! React automatically escapes/sanitizes content inserted via {}.
+
+AT THE END OF THE DAY :)
+REACT IS JAVASCRIPT 
+REACT ELEMENT IS OBJECT
+JSX IS REACT ELEMENT
+FUNCTIONAL COMPONENT IS FUNCTION
+
+IF I WANT TO ADD COMPONENT I CAN ADD LIKE THIS ALSO 
+{COMPONENT()} BECAUSE I CAN WRITE ANY PART OF JS IN THIS CURLY BRACES AND FUNCTIONAL COMPONENTIS NOTHING BUT A FUNCTION AT THE END OF THE DAY SO I CAN DIRECTLY EXECUTE THAT
+
+<Component/> and  <Component> </Component> and {Component()} is same we can write either of this.
+
+so at the end of the day is JSX is what makes react code readable.
+
+✅ The library responsible for rendering JSX into the root DOM element is:
+👉 react-dom
+
+
+
+"Since Parcel internally uses Babel to transpile JSX, and both are installed as dev dependencies, how does JSX get converted in production if these tools aren't shipped with the deployed code?"
+
+✅ The key idea:
+JSX is never sent to production. Babel transpiles it to plain JavaScript before production.
+
+Let’s break it down step by step 👇

@@ -1,0 +1,24 @@
+{
+  "name": "lec-02",
+  "version": "1.0.0",
+  "description": "episode-02 react",
+  "scripts": {
+    "test": "jest",
+    "start" : "parcel index.html",
+    "build" : "parcel build index.html"
+  },
+  "author": "Suryam",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.15.4"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "browserlists":[
+    "last 2 versions"
+  ]
+
+  
+}
