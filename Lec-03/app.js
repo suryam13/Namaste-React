@@ -19,7 +19,6 @@ this
 // const HeadingComponent = () => <> <h1> This is a functional component</h1> <AlternateComponent /> </>
 //when we have to write multiple sinilings then we wrap it under <> </> fragment
 
-
 const HeadingComponent = () => <h1> This is a functional component</h1>
 
 const AlternateComponent = () => <h4> This is an injected Component</h4> 
