@@ -28,6 +28,6 @@ const root = ReactDOM.createRoot(document.querySelector('.root'))
 root.render(<HeadingComponent />)
 //over here the functional component is been transpiled by babel into a JS Object and then that JS Object is been rendered by ReactDOM into the webpage in the form of html tags
 
-// root.render(MyComponent()) //works same
+// root.render(MyComponent()) //works same,but still folow the syntax
 
 
