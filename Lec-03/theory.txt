@@ -13,7 +13,7 @@ start,stop,test
 
 
 JSX is not a part of react,we can write react with core syntax too.
-But to make the process more easier and to increaser the readibility we create elments using JSX.
+But to make the process more easier and to increase the readibility we create elments using JSX.
 JSX is not html in javascript,instead its html/xml like syntax.
 How can u prove this ?
 because in jsx i cannot write simply class="" as i could do in html and every attribute has to be written in camelCase and over here it is className as class is reserved keyword in JS
@@ -31,6 +31,7 @@ whenever JSX is present, Babel comes into play ✅ for conversion
 🔵 Parcel uses Babel under the hood
 
 What is JSX ?
+JavaScript XML
 You write HTML-like code inside JavaScript, and Babel compiles it to React.createElement() calls behind the scenes which ultimately turns that into JS Object.
 Babel is transpiler which converts code of same language from one version to another,like ES6 arrow functions to normal functions for browser compatibility.
 
@@ -65,10 +66,10 @@ Everything in react is a component may it be a card or a header or a footer.
 
 React Functional Component :
 
+A component is a normal function which returns a piece of JSX
 Always name it with a capital letter else error,its a react way to understand component.
-It is a normal JS function which returns JSX
-
-///A function which returns JSX code is said to be a functional component,in other words a function which returns react element is a functional component
+Note : for normal function u can use any of the naming convention untill u are returning jsx,but when dealing with component u have to compulsorily start the component with uppercase letter.
+A function which returns JSX code is said to be a functional component,in other words a function which returns react element is a functional component
 
 const HeadingComponent = () => {return <h1> This is a functional component</h1>}
 
@@ -79,6 +80,7 @@ const HeadingComponent = () => {
 return <h1> This is a functional component</h1>
 }
 
+
 //react element format
 const HeadingComponent = () => {
   return React.createElement("h1", null, "This is a functional component");
@@ -86,6 +88,7 @@ const HeadingComponent = () => {
 
 
 IF FUNCTIONAL COMPONENT RETURNS JSX AND THE NORMAL VARIABLE WHICH HOLDS JSX, WHAT'S THE DIFFERENCE BETWEEN THEM ? ONE RETURNS JSX AND ONE DIRECTLY STORES JSX,CANT THIS BE USED AS FUNCTIONAL COMPONENT ???
+Because a react component supports react lifecycle and also various hooks can be used inside that accordingly
 
 What if i write both the methods name as capital would it be considered then ?
 
@@ -108,7 +111,8 @@ const HeadingComponent = () => <> <h1> This is a functional component</h1> <Alte
 This is called as Component Composition.
 
 if there are multiple sibilings then wrap it within fragment <> </> or div
-
+Fragments are invisible containers — they help you group elements without polluting your DOM and doesnt adds extra node.
+Use div only when you need an actual container element for styling, layout, or structure.
 
 let val = 1000; or any expression {5+3}
 i can add this using {} anywhere in JSX
@@ -126,8 +130,28 @@ similiarly we can add any reactElement inside functional Component
 similiarly we can add any functional Component inside reactElement
 similiarly we can add any functional Component inside functional Component
 
-for functional component : <Component/> OR  <Component> </Component> OR {Component()}
-for reactElement : <element> 
+for functional component : <Component/> OR  <Component> </Component> (when u have to pass the children)
+for reactElement : {element}
+
+eg:
+function Wrapper(props) {
+  return (
+    <div style={{ border: '2px solid red', padding: '10px' }}>
+      {props.children}
+    </div>
+  );
+}
+
+
+function App() {
+  return (
+    <Wrapper>
+      <h2>Hello from inside Wrapper!</h2>
+      <p>This is a child element.</p>
+    </Wrapper>
+  );
+}
+
 
 <Component/> and  <Component> </Component> is same we can write either of this.
 
@@ -141,10 +165,8 @@ REACT ELEMENT IS OBJECT
 JSX IS REACT ELEMENT
 FUNCTIONAL COMPONENT IS FUNCTION
 
-IF I WANT TO ADD COMPONENT I CAN ADD LIKE THIS ALSO 
-{COMPONENT()} BECAUSE I CAN WRITE ANY PART OF JS IN THIS CURLY BRACES AND FUNCTIONAL COMPONENTIS NOTHING BUT A FUNCTION AT THE END OF THE DAY SO I CAN DIRECTLY EXECUTE THAT
 
-<Component/> and  <Component> </Component> and {Component()} is same we can write either of this.
+<Component/> and  <Component> </Component> and {Component()} is same we can write either of this but the last one is not recommended
 
 so at the end of the day is JSX is what makes react code readable.
 
@@ -152,10 +174,7 @@ so at the end of the day is JSX is what makes react code readable.
 👉 react-dom
 
 
-
 "Since Parcel internally uses Babel to transpile JSX, and both are installed as dev dependencies, how does JSX get converted in production if these tools aren't shipped with the deployed code?"
 
 ✅ The key idea:
 JSX is never sent to production. Babel transpiles it to plain JavaScript before production.
-
-Let’s break it down step by step 👇
