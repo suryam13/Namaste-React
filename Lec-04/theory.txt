@@ -1,0 +1,112 @@
+/*
+FOOD ORDERING APP :
+Requirement Gathering 
+
+All of them are components.
+
+Header
+-nav links
+-logo
+
+Body
+-search
+-restaurant cards
+ -res cards
+  -img
+  -start ratings
+  -cuisine
+  -delivery time
+
+Footer 
+-copyright
+-address
+*/
+
+
+Make sure to preserve the order of the components and their usage as u cannot use a thing which is not declared above except named function keyword which follows hoisting
+
+
+HOW TO ADD CSS IN JSX
+const styleCard = {
+    color:red
+}
+
+div< style = {stylecard} >   </div>
+OR
+
+div< style = {{color:"red"}} >   </div>
+
+
+
+In the ResCardComponent i used hard coded values,how can i make the values dynamic ?
+=> The answer is props which is shorthand notation for properties which u can pass to the component
+So as we know that at the end of the day a function component is nothing but a normal function which returns a JSX or a reactElement
+Similiarly props is nothing but an argument to the function 
+
+so here what we do is we pass props to a function,so what react will do is it would wrap all the items in an object and pass a single variable props to the component
+
+What is config driven UI which is used by Swiggy ?
+It changes the carousel list as per the location and the offers
+
+While destructuring a object ....
+const { one, two, three } = someObject;
+👉 What’s actually happening is:
+JavaScript looks inside someObject for keys named exactly one, two, and three.
+Then it assigns their values to variables with the same names.
+
+if want to rename then 
+const { one: firstNumber } = obj;
+
+🔍 Key Difference:
+Object destructuring → Matches by key name ✅
+
+Array destructuring → Matches by position/index ✅
+
+Passing props in the component 
+it's important to wrap the value inside {} when passing variables or expressions in JSX props.
+eg : <Component name = {username} /> // using jsx so has to wrap inside {} as using js expression
+eg : <Component name = "Suryam" /> //hard coded values
+
+
+Whenever looping with the .map in array or by using any other method for looping purpose,we always have to pass they key as a argument,why?
+because lets suppose in card components there comes a new card then the react would have to render all that again to findout which came new but on contrary lets suppose if u provide with unique id then it could analyse which came new as the previous would have already been stored , so Whenever we loop plz add a key to increase the optimization and to make sure that react uniquely identifies all this
+
+  <div>
+    {users.map((user, index) => (
+      <div key={index}>
+        <h3>{user}</h3>
+        <p>Welcome, {user}!</p>
+      </div>
+    ))}
+  </div>
+
+  When rendering multiple elements (like in a list), the **key** must be passed to the outermost element of each item being rendered — typically the root JSX element inside your .map() or for loop.
+
+
+u can use indexes as an id but not recommended officially by react.org
+
+Lets suppose if i get an array of objects which consists 
+let arr = [{},{},...]
+ <div className='res-container'>
+ //now i want to write a js code in jsx so use {} 
+ {
+    arr.map( (obj) => { return <ResCardComponent  resObj = {obj} />} )
+ }
+ </div>
+
+ return is mandatory when rendering components inside loops in React.
+
+
+GENERAL STEPS TO RUN A REACT PROJECT USING PARCEL
+
+STEP 1 : npm init (loads package.json)
+STEP 2 : npm i react react-dom
+STEP 3 : npm i -D parcel
+STEP 4 : in js file import React from 'react'; import ReactDOM from 'react-dom/client';
+STEP 5 : in index.html add type = 'module' script tag
+
+
+SOME GENERAL CSS TIPS :
+1.if u want to make a set of items horizontal then apply display:flex to the parent container and then apply the spacing using justify center accordingly
+2.to navigate into a certain child of a item use nested selector .navItems > ul > li
+3.make sure that there is no space between : and hover as it then gets applied to the child elements className:hover 
