@@ -15,6 +15,11 @@ it gets created when we do npm init,as package.json is the configuration file fo
 when is pacakage-lock.json created ?
 when we install at least one dependency or package
 
+1.When we have our package.json and do npm i express then a dependency is been added in package.json and then automatically the node modules folder is been attached with all the relevant pacakges from package.json
+2.When we only have package.json and have deleted the node_modules by doing npm i all the relvant packages are been added in the node_modules and the folder is been created.
+if package.json is been deleted still it wont be enough to get the package.json but if we have the vice verca case then it can be lock can be inserted looking at the package.json
+
+
 "parcel": "^2.15.4"
 ^ sign is called as caret it automatically updates the minor version if in future if it is proposed
 This allows versions:
@@ -63,7 +68,7 @@ It only gets added to node_modules when you explicitly install it.
 Should i push node_modules on the production?
 no,becuase it is a bulky file and if we have package and package-lock we can generate the same over there
 when i do npm i again after deleting node_modules
-NPM will automatically detect what needs to go inside the node_modules folder by looking at:package-lock.json and 
+NPM will automatically detect what needs to go inside the node_modules folder by looking at package-lock.json 
 
 ❓ If package-lock.json has exact versions, then why do we still need package.json?
 ✅ Short Answer:
@@ -88,7 +93,7 @@ HOW TO INSTALL PARCEL ?
 npm i -D parcel  (dev dependency)
 
 Types of Dependencies :
-There are normal dependencies which are essential int the production so we install it as a main dependency and then there is dev dependencies which are required just in the development phase and has no use in the production se we install it as a dev dependency
+There are normal dependencies which are essential in the production so we install it as a main dependency and then there is dev dependencies which are required just in the development phase and has no use in the production se we install it as a dev dependency
 
 
 HOW TO START THE DEVELOPMENT SERVER ?
@@ -100,13 +105,16 @@ NPM V/S NPX
 
 CMD : npx parcel index.html
 
+
+Job of Parcel :
+
 Reads your index.html
 Follows all linked scripts, styles, assets
 Bundles and optimizes them
 Starts a development server by default (e.g., http://localhost:1234)
 Automatically refreshes the browser when files change
 
-Using cdn is not a good way to use react because it comes form different origin,it is always better to have it in node_modules so that the tracking of versions becomes easier
+Using cdn is not a good way to use react because it comes from different origin,it is always better to have it in node_modules so that the tracking of versions becomes easier
 
 
 install react and react-dom
@@ -139,8 +147,10 @@ npm i react-dom
 npm i -D parcel
 npx parcel index.html
 npx parcel index.html --no-cache (rare use)
+
 dev build:
 npx parcel index.html
+
 production build:
 npx parcel build index.html
 
@@ -180,7 +190,7 @@ The dist folder stands for “distribution” — it contains the final output o
 ✅ In simple words:
 The dist folder is where Parcel puts your built and optimized files.
 
-parcel-cache amd dist can be regenerated so no need to push to github,because when we do npx parcel build index.html it gets generated
+parcel-cache and dist can be regenerated so no need to push to github,because when we do npx parcel build index.html it gets generated
 
 how can i add browser compatibility in package.json ?
   "browserlists":[
