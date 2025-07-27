@@ -1,5 +1,5 @@
 
- const heading = React.createElement('h4',{id:"heading"}," Its my first day of learning react !")
+const heading = React.createElement('h4',{id:"heading"}," Its my first day of learning react !")
 //tag {attributes} content
 //this creation of element comes under react so using React.
 //at the end of the day when i log this heading i would get an object
@@ -43,7 +43,7 @@ root2.render(parent)
 
 /*
 NOTE :
-lets suppose there were some content on line2 class in the page that would be entirely replaced by the current content,if u want to avoid then create a new div next to the prev and add the content
+lets suppose there were some content on line2 class in the page that would be entirely replaced by the current content which is been rendered,if u want to avoid then create a new div next to the previous and add the content
 
 class is defined in JS due to OOPS so use classname while adding the attrributes
 */

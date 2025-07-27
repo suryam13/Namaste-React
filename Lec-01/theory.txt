@@ -1,15 +1,23 @@
 
-      
 <!-- 
+
+writing pure JS also known as vanilla JS
+
 // let line = document.querySelector('.line1')
 line.innerHTML = '<h4> Its my first day of learning react ! </h4>
+//this action would replace the previous content
 
 // let ele = document.createElement('h4');
 
 // ele.textContent = 'Its my first day of learning react !'
 // line.appendChild(ele); -->
+// this would be added beneath the previous element
 
 
-<!-- //CDN LINKS FOR REACT,means on this link the entire part is been hosted we just have to inject it in our codefile the frist one is the core react and the 2nd one is the the dom one which is especially vuilt for web applications
+<!-- //CDN LINKS FOR REACT,means on this link the entire part is been hosted we just have to inject it in our codefile the first one is the core react and the 2nd one is the the dom one which is especially built for web applications
 //why do we use this links ? because browser has the super powers to understand the core javascript as it is been there in browser but when it comes to react we have to inject it from somewehere else so that the browser understands it. 
-CDN Only works in browser if we try to og in the node environemnt we would get an error-->
+CDN Only works in browser if we try to log in the node environemnt we would get an error -->
+
+<-- U can also add the script in the head tag with writing defer  <script src="main.js" defer> it downloads the script parallely and injects the js file after everything is been rendered -->
+
+We use type="module" in <script> to unlock modern JavaScript module features, like import/export, scoped code — all essential for scalable web apps today.
