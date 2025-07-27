@@ -16,8 +16,8 @@ when is pacakage-lock.json created ?
 when we install at least one dependency or package
 
 1.When we have our package.json and do npm i express then a dependency is been added in package.json and then automatically the node modules folder is been attached with all the relevant pacakges from package.json
-2.When we only have package.json and have deleted the node_modules by doing npm i all the relvant packages are been added in the node_modules and the folder is been created.
-if package.json is been deleted still it wont be enough to get the package.json but if we have the vice verca case then it can be lock can be inserted looking at the package.json
+2.When we only have package.json and have deleted the node_modules then by doing npm i all the relevant packages are been added in the node_modules and the folder is been created.
+if package.json is been deleted adn we ahve lock.json still it wont be enough to get the package.json but if we have the vice verca case then it can be retrieved lock can be inserted looking at the package.json
 
 
 "parcel": "^2.15.4"
