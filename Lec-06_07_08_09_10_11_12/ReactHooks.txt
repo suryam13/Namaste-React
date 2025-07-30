@@ -1,0 +1,115 @@
+Why do we need react,why is it faster?
+So that the UI layer and data layer are in sync with each other
+Because it can do efficient DOM Manipulation,there are concepts like Virtual DOM,reconciliation
+Without React Manually Doing state management becomes difficult.
+
+
+What are Hooks?
+Hooks are the normal JS utility function given to us by react,this functions come with super-powers which has some logic written behind the scenes.It keeps the UI in sync with the variables
+
+There are 2 ways in which i can use the hooks in react.
+1.import React from 'react'
+const [num,func] = React.useState(0);
+
+2.import {useState} from 'react'
+const [num,func] = useState(0);
+
+
+RULES:
+1.Always declare the hook inside a component or custom hook only
+2.Whenever a state variable updates react re-renders the component where it has been used.
+
+1.useState()  =>  super-powerful state variables in react
+It maintains the state of the variable all over the aplication.
+const [var_name] = useState( Defaultvalue )
+
+🔁 What exactly does useState return?
+It returns an array with 2 values
+
+state → The current state value
+setState → A function that lets you update that state
+
+
+WORKING :
+
+how to change the data ?
+use the setFunction 
+setFunction(pass the new data and it would be changed across all the areas where u have used that variable)
+
+
+
+2.useEffect()
+This is a hook where we pass two arguments : callback function and a dependency array.
+
+useEffect(() => {},[])
+
+
+Now the question comes is when will the callback function be called?
+When we write this hook inside a component,once the componentis been rendered,then the callback function of the useEffect is been called. 
+
+More precisely, it's called after the DOM has been painted (i.e., after the render phase).
+This makes useEffect() perfect for things like data fetching, DOM manipulation, or setting up subscriptions.
+
+React first renders the component → updates the DOM → then calls useEffect()
+It’s like saying: "Now that I’ve painted your part of the wall, you can go run your side job."
+
+No matter where you place the useEffect() inside a component — top, middle, or bottom of the component body — the useEffect callback will always run after the component finishes rendering and commits to the DOM.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SOME IMPORTANT POINTS :
+1.  //unlike the button onClick,here the return is sent to the div so that would be rendered automatically 
+    // That’s how React works — it watches what you return from your component, and renders it to the DOM.
+    // Yes, return values inside the render or JSX block will be rendered.
+    // Return values inside event handlers like onClick will be ignored unless they affect state.
+
+
+
+
+REACT DOM OPTIMISATION :
+
+React optimizes DOM updates using a reconciliation algorithm, implemented through the React Fiber architecture.
+When a state variable changes, the corresponding component re-renders using the Virtual DOM, which is a lightweight representation of the real DOM.
+React uses a diffing algorithm to compare the new Virtual DOM with the previous one, and applies only the minimal changes to the actual DOM.
+
+The Virtual DOM is an in-memory (JavaScript) object representation of the actual DOM.
+
+| Term               | What It Means                                                                                | When It Happens                                |
+| ------------------ | -------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| **Reconciliation** | The **overall process** React uses to update the DOM                                         | Every time a component's state or props change |
+| **Diffing**        | The **specific step** inside reconciliation where React **compares** old and new Virtual DOM | To find **what exactly changed**               |
+
+
+⚛️ What is React Fiber?
+React Fiber is the core architecture and rendering engine behind React (since React 16).
+It enables incremental rendering, prioritization, and interruptibility of work.
+
+In simple terms:
+React Fiber is the new engine that performs reconciliation and scheduling intelligently
+
+Under the hood what happens is 
+React reads your component's JSX and builds a Virtual DOM (in memory) using JavaScript objects
+React translates that Virtual DOM into real DOM nodes and inserts them into the actual browser DOM
+
+First, the Virtual DOM is created.
+Then, the Actual (Real) DOM is created or updated based on the Virtual DOM.

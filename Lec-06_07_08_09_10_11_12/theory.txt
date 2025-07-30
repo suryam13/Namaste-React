@@ -1,0 +1,955 @@
+/***********************************************************  LEC-06  ********************************************************************/
+
+Monolithic VS Microservices
+✅ Monolithic Architecture (All-in-one)
+
+1.Entire application is built and deployed as a single unit.
+2.All components (UI, business logic, DB) are tightly coupled.
+3.Easier to develop, test, and debug in the early stages.
+4.Difficult to scale specific features or update parts independently.
+5.Best suited for small to medium-sized applications with simpler needs.
+
+✅ Microservice Architecture (Divide and Conquer)
+
+1.Application is split into small, independent services.
+2.Each service handles a specific business function and communicates via APIs.
+3.Enables independent deployment, scaling, and tech stacks per service.
+4.Requires complex infrastructure, service coordination, and monitoring.
+5.Ideal for large, complex systems with multiple development teams.
+6.In microservice architecture there is seprartion of concern and single responsibility principle 
+7.one of the biggest advantages of microservices is the freedom of technology choice per service, also called polyglot architecture.
+
+✅ In Microservices:
+Each service is independent and can be written in any language or framework.
+So yes, you can absolutely do this: 
+✅ Frontend: React.js
+✅ Backend API: Java (Spring Boot)
+✅ SMS service: Golang
+✅ Database: MySQL/PostgreSQL
+As long as they communicate via well-defined APIs (like REST or gRPC), integration is smooth.
+
+The question comes how do these different services interact with each other ?
+The independent services work on their respective port and at the end they are been mapped to the domain names like /api or /auth
+
+How to the individual services interact with each other ?
+Just like how your browser loads a web page by calling a URL,
+👉 microservices call each other using API endpoints like:
+
+http://orderservice/api/orders/123
+http://paymentservice/api/payments
+So yes, they navigate to "different links" (URLs) — but not in a browser. Instead:
+
+They use HTTP requests (GET, POST, PUT, etc.) programmatically.
+
+We have two ways in which we can feth the data from Backend/API
+Approach 1 : LoadPage -> API CALL()(wait for till it comes) -> Render
+Approach 2 : LoadPage -> Render(random stuffs for UX) -> API CALL(when the random stuffs are been rendered) -> Re-Render(now this time call the relevant api)
+
+The Option 2 has much better UX as at least the user sees some sort of things initially.
+
+
+How to use .fetch with try catch and async await
+
+
+1.then catch (note that in this the then and catch method gives a callback function inside)
+const api_fetch = fetch (url);
+
+api_fetch
+.then( (res)=>
+{
+    if(!res.ok) //res.ok returns false if there was any http error
+    throw new Error('HTTP ERROR');
+
+    //means everything is fine
+    return res.json() //this again returns a promise
+})
+.catch((err) =>
+{
+    console.log(err);
+})
+
+.then((data)=>
+{   
+    console.log(data)
+})
+
+2.using async await 
+
+async function getPost() {
+
+  try {
+    const res = await fetch("https://jsonplaceholder.typicode.com/posts/1");
+
+    const data = await res.json(); //using await because this too returns a promise and takes time
+
+    console.log(data);
+  } 
+  catch (err) {
+    console.log("Error:", err);
+  }
+}
+getPost();
+
+
+now we are trying to call an api using 'useEffect' which gets called after the component gets completed
+
+   useEffect( () => {
+        
+        const apiCall = async () => {
+
+        const data = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=19.4066276&lng=72.8394477&page_type=DESKTOP_WEB_LISTING")
+        const formatData = await data.json();
+
+        console.log(formatData);
+       }
+
+        apiCall();
+    } , [] );
+
+//but this would give error because of fetching from different domains
+which prohibits cors policy by the browser
+//inorder to bypass this , use an extension allow cors 
+
+
+
+After i fetched the API data and with the help of useEffect hook and useState variable inside that callback function now i can omit the initial value given to the useState variable because after a fraction of seconds when the api call would be made after the completion of the component it would be re rendered again.
+const [currData,setCurrData] = useState() //so i can omit to give the initial value
+
+Meanwhile the API call is been made in order to make the UX better we use Shimmer UI in place of a loading symbol or spinner.
+Shimmer UI (also called a loading placeholder, skeleton screen, or loading shimmer) is a visual effect used to show that content is loading — instead of showing a boring "Loading..." message or spinner, it shows a greyed-out animated placeholder that looks like the layout of the final content.
+What it does is it provides the background skeleton so that the user becomes a bit aware of what thing is going to be loaded
+
+ if(currData.length === 0)
+{   
+        return <Shimmer/>
+}
+
+What is the difference between normal variable and useState variable ?
+if u want ur webpage dynamic then u have to use hooks so that whenever that value is been toggled the UI gets re-rendered and component gets re-rendered again so wherever that variables are been used everywhere it is been changed.React re-renders and triggers the component again on state change.
+NOTE : the whole Header function would be rendered again not just that specific part where button is placed  
+
+
+const [status,setStaus] = useState('Login')
+
+<button className='login-button' onClick={
+()=>{
+  status === 'Login' ? setStaus('Logout') : setStaus('Login')
+}
+}> {status}</button>
+
+how come we write const and it doesnt conflicts if the state variable changes because every time the component is been rendered it creates the new instance of that state variable where the state variable and the state function are been created fresh.
+
+
+//Creating a search bar for restaurant filteration
+Intution to add such a functionality :
+
+i want that the data should be saved that is been entered,so i need a state variable for that
+what is value in input tag ? it saves the value of the box to perform operations further  
+now i have to tie this input value to the stateVariable
+
+value={searchtext}
+
+const [searchtext,setSearchtext] = useState("")
+//for search-bar
+
+but when i do this even if the user writes in the search box still it wouldnt be entered because i have tied the input field to the state variable and the state variable is empty so it conflicts
+so inorder to deal with that i have to apply onChange to save the data and update the state variable on every entered character
+
+onChange={ (event) => {
+  setSearchtext(e.target.value)
+}}
+
+if i dont write the value attribute still it would work the same but it wont be controlled by react so that could give unpredictable behaviour in further uses
+
+User types → Triggers onChange → Updates state → React re-renders → React sets input value via value={searchText}.
+now as i am typing each character the local state is changing and that many times the component is been re-rendered 
+
+
+
+
+/***********************************************************  LEC-07  ********************************************************************/
+
+Would be studying about routes in this particular section
+
+in the useEffect hook,as it is been executed after the entire component is been rendered,so in the below code there are 2 changes in the stateVariable so it wouldnt render twice,instead it would collect this state updates collectively and would render only once to make it a bit optimised and apply the respective changes.
+
+setListOfRestaurant(demo) //to display the cards now
+setListOfFilteredRestaurant(demo) //initialising this also because we want to display this on home page and consider the listOfRestaurant as the main source for comparison 
+
+
+in useEffect hook there are multiple concepts regarding the use of dependency array :
+useEffect({},[]) => over here the useEffect would be called after the component is been entirely rendered and this useEffect particularly would be called at only the initial time and not on every re-render of the component,would be called only once.
+useEffect({}) => over here there is no dependency array so it would be called right after the component is been rendered as usual what happens in this hook but the catch is that it would be called every single time the component is been re-rendered by any means instead of just been called once.
+
+useEffect({}) => no dependency array then useEffect is called after very render
+useEffect({},[]) => dependency array is empty then useEffect is called just once during intial render
+// useEffect({},[status])It runs once after the initial render.Then, every time the stateVariable status changes it would run again. 
+
+Never write hooks outside the functional component and even inside the if else,for loop,functions,etc as it would throw an error
+You can only use hooks at the top level of your functional component (or custom hook).
+
+Now lets get back to routes concept , we can add routes in our application by using the npm i react-router-dom library from npm.
+
+Whenever we have to develop routes we have to make routing configuration that would be done via createBrowserRouter
+import { createBrowserRouter} from 'react-router-dom';
+
+STEPS TO CREATE ROUTES IN REACT 
+Routes are generally defined inside a central component, most commonly App.js :
+
+1. npm i react-router-dom
+2. import {createBrowserRouter} from 'react-router-dom'
+3. we have to make routing configuration which takes an array of objects where each object defines when its been redirected 
+   
+  const appRouter = createBrowserRouter([
+    {
+      path : '/about'
+      element : <about /> (the component to be rendered) 
+    },
+    {
+      path :'/contact'
+      element : <contact />
+    }
+  ]) 
+
+4.Now after making the configuration i have to provide that to render 
+so for that import {createBrowserRouter,RouterProvider} from 'react-router-dom'
+so now instead of rendering <App /> on the root we would be rendering
+root.render(<RouterProvider router={appRouter} />)
+
+
+Now lets create a fancy error page so that whenever some endpoint is been referred and doesnt exists then show the error component
+  const appRouter = createBrowserRouter([
+    {
+      path : '/'
+      element : <AppLayout /> (the component to be rendered) 
+      error : <ErrorPage />
+    }
+    {
+      path : '/about'
+      element : <About /> (the component to be rendered) 
+    },
+    {
+      path :'/contact'
+      element : <Contact />
+    }
+  ]) 
+
+React router dom gives us a hook which describes the error in more concise format.
+import {useRouteError} from 'react-router-dom'
+const err = useRouteError();
+
+
+Now what if i want to make my header intact and keep on changing the routes,i can do it hard coded by attaching the header to the coomponent of all the routes but thats a bad practice.So we will use children routes
+
+import {createBrowserRouter,RouterProvider,Outlet} from 'react-router-dom'
+
+const appRouter = createBrowserRouter([
+    {
+        path:'/',
+        element:<AppLayout />,
+        errorElement:<ErrorPage />,
+        children : [
+            {
+                index:true, //means when the path is same as that of parent then i want this to be rendered
+                element : <Body />
+            },
+            {
+                path : 'about',
+                element :<About />
+            },
+            {
+                path : 'contact',
+                element : <Contact />
+            }
+        ]
+        
+    },
+])
+
+In React Router v6+, when you're defining nested routes using children, you should always use relative paths (i.e., don't start with a /), or else things will not work as expected.
+
+Now we will attach the routes to the header in the nav bar list items
+Instead of using anchor tag we use Link because anchor tag refrehes the entire page while navigating whereas Link tag doesnt
+
+import {Link} from react-router-dom
+
+<Link to = '/about> </Link>
+but behind the scene link also uses anchor tag in console it is <a> <a/> only
+
+So by doing this we come to a conclusion that React is a single page application where the entire website isnt refreshed instead the components are just changed via client side routing we arent fetching any details or routes from the server instead we just change the components which we have generated in our codebase
+
+
+
+Now we will be making dynamic routing where dynamic information would be generated when we click on a particular restaurant cards
+
+Static routing is when you define fixed routes in your app that always point to specific pages or components.
+<Route path="/home" element={<Home />} />
+<Route path="/about" element={<About />} />
+
+
+Dynamic routing is when part of the route is a placeholder, and the actual value is taken from the URL during runtime.
+<Route path="/user/:id" element={<User />} />
+
+
+So for that making RestaurantMenu,which would be acting as a Dynamic Route
+
+in order to read the id from the link we use params
+
+path: res/:id/:name
+element : <Res />
+const {id,name} = useParams(); //this would fetch the id,name
+We always provide key while using map to uniquely identify in the parent container 
+
+
+/***********************************************************  LEC-08  ********************************************************************/
+
+In this we will be learning about Class Based Component which is now rarely used in React Projects but still some company uses them 
+
+A Functional Component is a Function which returns some piece of JSX
+A Class Component is a Class which extends React.Component and then renders() and sends a piece of JSX
+
+Functional Component :
+
+const User = (props) => {
+
+    return (
+        <div className="user-card">
+            <h2>Name : {props.name}</h2>
+            <h3>Location : Mumbai</h3>
+            <h4>Contact : @suryamdec13</h4>
+        </div>
+    )
+}
+
+export default User;
+
+
+How to pass props in this ?
+<User name = "Suryam" />
+
+How do we create state variables over here?
+const[set] = useState(0);
+
+
+Class Based Component :
+
+import React from 'react'
+
+class User extends React.Component{
+
+  constructor(props){
+    super(props);
+  }
+
+
+  render()
+  {
+    
+     return (
+        <div className="user-card">
+            <h2>Name : {this.props.name}</h2>
+            <h3>Location : Mumbai</h3>
+            <h4>Contact : @suryamdec13</h4>
+        </div>
+    );
+  }
+}
+
+
+How to pass props in this ?
+<User name = {"Suryam"} />
+
+How do we create state variables over here?
+In class based component there was no concept of hooks,so when am loading the class based component on the webpage it means that i am instantiating a class and creating an instance of class and giving to the web 
+So over here the best place to define state variables is the constructor which is called when class based component is made.
+
+
+
+constructor(){
+  super(props)
+  this.state = {
+    count : 0,
+    .....as many state variables seperated by comma
+  }
+}
+
+
+
+
+How do we update the state variables ?
+wrong way : <button onClick={ ()=> { this.state.count1 = 22 }}> IncrAge : </button>
+
+
+<button onClick={ ()=> {
+this.setState(
+      {
+          count1:this.state.count1+1
+      }
+  )
+} }> IncrAge : </button>
+ 
+//React takes that object and looks which of them have been updated and updates only the ones who are been sent in the object
+
+LifeCycle of class based Component :
+We'll be looking on how the class based component is been mounted on the webpage. 
+
+1st the Constructor() method is called.
+2nd the Render() method is called 
+3rd the componentDidMount() is called
+
+So lets suppose there are 2 components a parent and the child and in the paent inside the
+render() where JSX is written there is a child component been called
+
+STEP 1 : constructor() of parent
+STEP 2 : render() of parent
+STEP 3 : constructor() of child
+STEP 4 : render() of child
+STEP 5 : componentDidMount() of child
+STEP 6 : componentDidMount() of parent
+
+Why is componentDidMount used in class based component ?
+To make the API Calls
+
+componentDidMount is similiar to that of useEffect in funtion based component but not exactly the same. 
+But the thing is it's quite different when there is 1 parent and 2 children,becuase in order to optimize the performance as mounting is costly task so they combine both the the 2 children componentDidMount.
+
+CASE WHEN THERE IS PARENT INSIDE THERE 2 CHILDREN
+Parent constructor
+Parent render
+child1 constructor
+child1 render
+child2Constructor
+child2Render
+child1 componentMount
+child2Mount
+Parent componentMount
+
+
+CASE WHEN THERE IS PARENT INSIDE THERE 1 CHILDREN AND INSIDE THAT 1 CHILDREN THAERE IS ANOTHER 1 CHILDREN
+Parent constructor
+Parent render
+Child constructor
+Child render
+NestchildConstructor
+NestchildRender
+NestchildMount
+child componentMount
+Parent componentMount
+
+
+Primarily Speaking there are two phases 
+1.Render Phase - constructor() render()
+2.Commit Phase - mountPhase
+
+Commit Phase is expensive as we have to update the DOM so react tends to merge childs componentDidMount
+
+How to make an API CALL in Class Based Component ?
+We will be making a call to github user api and fetch the information in the class based component card
+Refer UserClass.js
+
+Life Cycle of react Component
+Mounting Phase :
+  Render Phase:
+    constructor()
+    render()
+  
+  Commit:
+    componentDidMount()
+       setState()
+
+
+Updating Phase (let's suppose i we made an api call in the componentDidMount() and updated the state variable to re-render and fill the data)
+  Render Phase:
+    render()
+  
+  Commit:
+    componentDidUpdate
+
+/****
+* --- MOUNTING Cycle----
+* initially it has dummy data as the api call is to be made later on
+* Constructor (dummy)
+* Render (dummy)/ 
+*     <HTML Dummy >
+* componentDidMount
+*     <API Call>
+*     <this.setState> → State variable is updated
+*
+* ---- UPDATE Cycle
+*
+* render(API data)
+*     <HTML (new API data)>
+* componentDidUpdate
+******/
+
+componentWillUnmount()
+What is the use of this ?
+This is called after we navigate from one page to other via a link 
+it is used for clean up purpose
+
+eg:lets suppsoe if i used setInterval to be called on didMount , even after navigating to different page 
+it would still be getting executed,and again when i come back to that page it would be now called twice with double speed so to stop this we write clean up in the componentWillUnmount.
+
+componentDidMount()
+{
+  this.timer = setInterval(()=>
+  {
+    console.log('print')
+  },1000
+  )
+}
+
+componentWillUnmount()
+{
+  clearInterval(this.timer);
+}
+
+but the question how do we deal with unmounting in functional component
+
+we return function in usEffect which acts like a componentWillUnmount
+
+useEffect(
+  () => {
+    const timer  =  setInterval(()=>
+    {
+    console.log('print')
+    },1000
+    )
+  }
+
+  //this return acts as a componentWillUnmount()
+  return ()=>{
+    //cleanup would be returned after u leave the page
+    clearInterval(timer)
+  }
+  ,
+  []
+)
+
+NOTE : 
+Never Ever compare react life cycle to functional component 
+
+
+ 
+/***********************************************************  LEC-09  ********************************************************************/
+
+In this lecture we will be learning about Custom Hooks.
+
+The most important principle in writing production code is SRP(Single Responsibility Principle) i.e. we have to make the codebase modular i.e. seperating them into seperate components which helps to enchance readibility,easy to debug,resuable,testable and maintainable.
+
+What is the need of custom hook ?
+To maintain SRP and enhance readibility,its not necessary but recommended because the job of the component is to only render whereas all the logic part like data fetching and all should be written / wrapped inside hook.
+
+
+Hooks are nothing but normal utility functions / helper functions created in utils
+Hooks (like useState, useEffect, or custom hooks like useUsers) are just JavaScript functions — not React components.
+They always return values neither JSX nor it is a component and it mast start with use as a prefix
+They don’t receive "props" the way components do. But you can pass arguments to hooks (just like any regular function):
+it can send a single value that may be either a number,array,string or object
+
+
+eg: 
+
+const myHook  = (parameters if u want to get something ) => {
+
+  const [data,setData] = useState(null)
+
+  useEffect(()=>{
+    apiCall();
+    setData(fetchedData)
+  },[])
+    return resData
+}
+
+export default myHoook;
+
+🧠 Why not just use normal functions instead of custom hooks?
+Because:
+
+✅ Custom hooks are for handling React-specific logic — like useState, useEffect, useRef, etc.
+❌ Regular functions cannot use React hooks inside them — and that’s the key difference.
+
+
+writing a hook for online/offline status useOnlineStatus
+refer useOnlineStatus
+
+
+Optimisation :
+
+✅ 1. What is Chunking?
+🔹 Chunking is the process of splitting your entire JavaScript bundle into smaller pieces (chunks).
+
+By default, Webpack or other bundlers create a single huge JS file while putting all the components in one code which then eventually takes a lot of time for rendering purpose.
+
+Chunking allows splitting it into smaller files so the browser can load what’s needed, when needed.
+So over here we make smaller bundles,making bundles means doing in such a manner that all the components associated with a single feature hould be wrapped in one bundle 
+
+So now inorder to get familiar with chunking i.e seggregating the data into various bundles we will add an extra functionality in the application as swiggy instamart which deals with the delivery of goceries
+
+So here we will ot import the groceries as usual instead would be importing as lazy loading
+Lazy loading means that part of the code would be only configured when we navigate to that also known as on demand loading
+// import Grocery from './components/Grocery';
+const Grocery = lazy(()=>  import ('./components/Grocery') )
+
+Now over here it would still throw an error
+becuase what happens is when navigated to grocery it takes a certain amount of time to load the data as it is lazy loading but react tries to render it quickly as a result it gives error,so over here we have to enclose this between <Suspense>
+
+
+{
+  path : '/Grocery',
+  element : <Suspense fallback={<Shimmer />}> <Grocery /> </Suspense> 
+},
+
+fallback is what would be displayed untill the call is been made properly
+
+if my component was named export then 
+const About = lazy(() =>
+  import('./components/About').then(module => ({ default: module.About }))
+);
+
+
+/***********************************************************  LEC-10  ********************************************************************/
+
+Styling Part 
+
+Ways to add CSS in the project ?
+
+Varous CSS framework/libraries:
+SASS -> Syntactically awesome sheets
+StyledComponents  
+Chakra UI
+Material UI
+Bootstrap
+Ant Design
+Tailwind
+
+
+px-4 py-2 m-4 bg-green-200 rounded-xl 
+tailwind is quite lightweight even if u use p-4 that is padding multiple times still it would be included just once in the final minified code.
+Irrespective if we import the entire component of tailwind still only that part of the component would be taken into consideration which is been used in the project
+
+/***********************************************************  LEC-11  ********************************************************************/
+
+In this session will be talking about the concepts of data layer in react
+
+
+IMPORTANT TOPICS FOR DATA LAYER IN FRONTEND 
+
+*** Higher order components :- It is a function which takes a component and sends an enhanced component 
+
+Lets suppose if i have the restaurant cards,now i also have the data of 'promoted' restaurants so in such a case i want to label that card on top as promoted so for this i will be using the concept of higher order component which is a function and would be taking the component and returning a component  
+
+implemented this feature in ResCardComponent
+initially i make the component by calling the higher order component  
+const RestaurantCardPromoted = withPromotedLabel(ResCardComponent)
+
+then on certain conditions when the card needs to be displayed i pass certainprops to that new Component
+
+
+**Controlled & Uncontrolled Components
+Lets suppose we are building a cart feature where when we will click then only the description would be popped else would be hidden so for this we have to make accordian and control each component in that by implementing a toggle feature using useState onClick event if button is been clicked -> true then show else dont show that component 
+
+
+now i have to introduce  a functionality where collapse others when one is been opened so here i have  to make the parent as the head for managing the state and then all the childrens would be controlled components
+For this we use the concept of lifting the states up
+
+**Lifting the state Up
+It means moving the state to the closest common parent component so that multiple child components can access and share that state.
+eg : 
+
+Parent Component :
+import React, { useState } from 'react';
+import AccordionItem from './AccordionItem';
+
+const Accordion = () => {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  return (
+    <div>
+      {[0, 1, 2].map((val, index) => (
+        <AccordionItem
+          key={index}
+          index={index}
+          isOpen={openIndex === index}
+          openIndex={openIndex}
+          setOpenIndex={setOpenIndex}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default Accordion;
+
+Child Component
+import React from 'react';
+
+const AccordionItem = ({ index, isOpen, openIndex, setOpenIndex }) => {
+  const handleClick = () => {
+    if (openIndex === index) {
+      setOpenIndex(null); // collapse if same item is clicked
+    } else {
+      setOpenIndex(index); // expand new item
+    }
+  };
+
+  return (
+    <div className="border mb-2 p-4">
+      <div className="cursor-pointer font-bold" onClick={handleClick}>
+        Section {index + 1}
+      </div>
+      {isOpen && (
+        <div className="mt-2 text-gray-700">
+          This is the content of section {index + 1}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default AccordionItem;
+
+
+
+**Props Drilling (a problem)
+Props Drilling is when you pass data (via props) from a top-level component to a deeply nested child component, through intermediate components that don’t even need that data, just to get it to the target.
+
+But lets suppose there is a huge nesting and u want to directly send the data to the other level without sending it to intermediate parents but u cant as there is no choice other than drilling
+
+So for this to avoid props drilling we have to use react context
+Its kind of a central global object that can be used anywhere accross the aplication
+
+Context API :
+It has three functionalities
+createContext
+useContext
+.Consumer (for class based components (obj) => {obj.username})
+.Provider (for setting values ={ { } })
+
+import {createContext} from 'react'
+
+const UserContext = createContext(
+  {
+    loggedInUser:"Default User"
+  }
+)
+
+export default UserContext
+
+
+now to use it in other components , i'll have to 
+import {useContext} from 'react';
+import UserContext from '../utils/UserContext';
+
+const {loggedInUser} = useContext(UserContext);
+//destructuring the property from the object
+
+//now can use loggedInUser anywhere in the component,refer header for usage
+
+
+What if it want to use the same context in class based component over there i cannot use useContex as there isno access of hooks in class based component so we use
+<UserContext.Consumer>
+
+  {(data) => console.log(data)} 
+  //by writing a callback function we get the object data then can access the variable using data.loggedInUser
+  //wrapping under {} as using JS in JSX
+
+</UserContext.Consumer>
+
+
+
+//what if i want to modify the context now,so wrap it on top of the main app
+so that it is now changed globally or if u want at certain component then wrap it around there
+
+UserContext.Provider is a wrapper component that makes the context value available to all its children — no matter how deep they are in the component tree.
+
+✅ Can we write new properties inside the value of a Provider?
+Yes, absolutely!
+You can pass any object or value you want — it doesn't have to be the same as before.
+
+cosnt[username,setUserName] = useState("Default")
+
+<UserContext.Provider value={{loggedInUser : username}}>
+
+</UserContext>
+
+if i want that specifically header should have some another name then i can again use UserContext and wrap it aroud header we would get that name in the header section.In this way we can nest context
+
+lets suppose over here if i want to change the username on the fly that too i could do by passing a useState funcion in the value so that it becomes accessible from there too value = {{loggedInUser:username , setUserName}}
+in the context object i have also added a function to modify itself by passing eh statefunction
+
+const {setUserName,loggedInUser} = useContext(UserContext)
+
+<input value={loggedInUser} onChange = {(e) => setUserName(e.target.value)} />
+
+Redux is a state management library doesnt comes from React have to install it using npm i 
+
+if we are building small or medium size apps than context is enough to handle efficiently but in large scal we generally use redux.
+
+/***********************************************************  LEC-12  ********************************************************************/
+
+In this lec we'll be studying about redux -a state management library
+
+Redux is a state management library for JS Application which provides a centralised store to manage the the state of your app
+
+Redux Toolkit is a library and is the official, recommended way to write Redux logic.
+It's a package built on top of Redux to make it simpler and more efficient. 
+
+The Redux store is a core concept of Redux (and Redux Toolkit).
+It’s the central place where your entire app's state lives.
+its kind of a big global object
+
+
+
+Redux is used for state management,it is not mandatory to use u can use Context API for small to medium size web applications but in case of high size application Redux is used
+
+Redux and React are different libraries
+Redux offers easy debugging
+Similiar to redux there exists Zustand too which is used as a library for state management
+
+Redux team offers 2 libraries
+React-Redux --> its kind of a bridge between react and redux
+Redux Toolkit --> newer way of writing redux,standard way to write redux logic
+
+✅ What is Redux Toolkit used for?
+Redux Toolkit is used to manage and share data (state) between multiple components in a clean and efficient way — especially when the app becomes big and complex.
+
+What is Redux Slice ? 
+You have one single Redux store for the entire application.
+But inside this store, the state is split into multiple logical groups, and each group is called a slice.
+
+
+Redux says that u can't directly modify the slice in the store there is a method for that
+
+lets suppose i am developing a cart functionality where i click onto add and theat should go into the store 
+
+for that when i click onto add it dispatches an action and then calls a function which is called as reducer and then that  function modifies the data in the cart slice
+This was how we can write data
+
+Now lets talk about reading the data
+For this we use something as selector which reads the data from slice and then updates the data
+THe process is called subscribing to the store
+The cart component in the header is subscribed to the store via selctor so the count of the items in the header gets updated automatically
+
+
+#Redux Toolkit
+Note that react-redux and redux toolkit both are libraries
+npm i react-redux @reduxjs/toolkit
+Build our redux store
+Connect our store to the app
+Slice(cartSlice)
+dispatch(action)
+selector
+
+STEPS :
+
+STEP 1 : CONFIGURE THE STORE (done in appStore in utils)
+
+import {configureStore} from @reduxjs/toolkit 
+
+const app = configureStore()
+
+export default app;
+
+
+STEP 2 : Attach the store to the application which acts like a bridge which comes from react-redux i.e 
+
+import {Proivder} from react-redux
+wrap the part where u want to use the store if u want that in entire app so go in app.js and 
+
+<Provider store={appStore}>    
+
+//inner logic of the main entry point app.js
+
+</Provider>
+
+
+STEP 3 : Creating slice
+import { createSlice } from "@reduxjs/toolkit";
+
+const cartSlice = createSice({
+  name : 'cart'
+  initialState : {
+    items:[]
+  },
+  reducers :
+  addItem : (state,action) => {
+      state.items.push(action.payload);
+  }
+})
+ 
+export const {addItem} = cartSlice.actions
+
+export default cartSlice.reducer;
+
+So you're only exporting the reducer function, which includes:
+The logic to handle actions
+The embedded initial state
+
+if u want the the entire  cartSlice to be accessible then export cartSlice
+
+
+STEP 4 : Reconfiguring the store
+import {configureStore} from @reduxjs/toolkit 
+import cartReducer from './cartSlice'
+
+const app = configureStore(
+   reducer : {
+        //this is the main reducer which consists of small reducers
+        cart : cartReducer ,
+        
+    }
+)
+
+export default app;
+
+
+
+STEP 5 : Subscribing to the store using selector
+const cartItems = useSelector ((store) => store.cart.items )
+//here the store which we are getting is the appStore as in an application there could be only one store and then it consists of slices here reducer property is ignored in the main store and we directly write store.cart.items
+//here in the function we are defining whch part needs to be communicated with
+
+
+
+STEP 6.Inserting Values i.e dispatching an action
+
+const dispatch = useDispatch()
+on click of the cart i want this function to be invoked 
+
+import {addItem} from Location
+
+const handleItem = () =>{
+  dispatch( addItem("pizza"))
+}
+
+this 'Pizza" is nothing but action.payload behind the scenes
+
+1.Whenever subscribing to the store make sure that it is perfectly subscribed to only that part of the store which is needed else can result in low performance
+
+cont storeUse = useSelector( (store) => store.cart.items)
+
+useSelector( (store) => store)
+const storeItem = storeUse.cart.items
+//both are same but this one is not efficient,because u ahev subscribed to the entire store so whenever in any of the slice changes occur then this w
+
+
+2.reducer VS reducers 
+In the appStore i am using reducer { cart : cartReducer }
+but in the cartSlice i am using reducers { addItem :(state,action) => {} }
+
+the point is that in the appStore there is one single reducer thats why that
+and in the cartSlice there are multiple reducer fucntions embedded inside that hence that name and while we are exporting a single reducer which consists all of that
+
+export default cartSlice.reducer
+
+
+3.In the older version of redux i.e vanilla redux we had to create a copy of state and then return the new we weren't allowed to mutate the state directly but in this redux toolkit we are allowed to direclty mutate the state becuase behind the scenes still redux still does the same thing of creating a copy of the state 
+using the Immer library 
+
+
+
+
+
+
+/***********************************************************  LEC-13  ********************************************************************/
