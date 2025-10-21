@@ -1,0 +1,77 @@
+body {
+  background-color: #fff3e0; /* Warm creamy beige */
+}
+
+
+.header{
+    display: flex ;
+    justify-content: space-between; /* to get the icon at one end and the nav at one end*/
+    border: 1px solid black;
+    border-radius: 50px;
+}
+
+.logo{
+    width: 100px;
+    padding-left: 45px;
+    color: aliceblue;
+}
+
+.navItems>ul{ 
+    display: flex;   
+    list-style-type: none;  /* to remove the dots */
+    font-size: larger;
+    padding-right: 50px;
+    
+}
+
+.navItems > ul > li {
+    margin: 10px;
+    padding: 10px;
+}
+
+.filter-btn{
+    margin-top: 25px;
+    cursor: pointer;
+
+}
+
+.res-card {
+  margin-top: 20px;
+  padding: 15px;
+  width: 180px;
+ 
+  background-color: #fff8f0;  /* Soft creamy peach */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+
+.res-card:hover {
+  background-color: #ffb84d;     /* Vibrant mango/orange */
+  border: 2px solid #e65100;     /* Deep orange border */
+  transform: scale(1.05);        /* Slight zoom on hover */
+  box-shadow: 0 6px 12px rgba(230, 81, 0, 0.3);
+}
+
+
+
+.res-container{
+    display: flex;
+    gap:5px;
+    flex-wrap: wrap; /*to make sure that the cards doesnt gets added horixontally and go at the right screen by extending */
+}
+
+.search{
+    margin-top:20px;
+}
+
+.res-img
+{
+    width: 150px;   
+}
+
+.shop-text{
+    margin-left: 10px;
+}
+

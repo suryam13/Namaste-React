@@ -1,0 +1,122 @@
+In industries the best practice is to make different folders / files for each component to increase readibility and modularity.
+
+adding script in html :  <script type='module'  src = "./src/app.js"></script>
+
+./ means search in the current directory then write nesting accordingly.
+../ means go one level above the current directory and then search
+eg : import LOGO_LINK from '../utils/constants'
+
+
+
+in case of import react we dont have to write .node_modules/
+because it breaks the resolution algorithm  u directly have to write it will search from global.
+import X from 'something';
+
+
+
+File Conventions :
+
+1.All the main / src code is written in src folder.
+
+2.Component Folder
+Inside the src folder there is component folder which consists of various components files.
+Component is nothing but reusable piece of code.
+At the end of the day the file structure doesnt matter because lastly the parcel is going to bundle up the code accordingly when sending over the production.
+
+You can save the file with any extension either .js or .jsx
+
+🔹 Should the name of the file be the same as the Component name?
+➡️ No, it's not required
+➡️ But yes, it's a recommended best practice
+
+How to export the component ?
+In the end write export default ComponentName
+
+How to import the component ?
+import ComponentName from './components/fileName'
+here there is a variable name u can give anything but prefer to give the exact component name for readibility
+
+
+3.Utils folder
+The utilities folder consists of all the utilities/constants/hardCodedData which we could use all across the app
+
+
+4.There are two types to export and import files :
+1.In one file we can have only one default export : Default Export
+   export default name
+   import variableName from './components/header' 
+
+2. when we want to export multiple things in one file  : Named Export 
+justwrite in front of variable name that's it
+eg : export const LOGO_LINK =
+    "https://png.pngtree.com/template/20191014/ourmid/pngtree-pin-food-delivery-map-location-delivery-logo-concept-image_318151.jpg";
+
+    import{LOGO_LINK,CDN_URL} from ../utils/constants
+     In named exports, the import name must exactly match the exported name.
+
+Also we can use both default export/import or named export/import in a single file .. but the default export can be done only once
+// 📁 constants.js
+
+export const LOGO_LINK = "https://logo.com";
+export const COMPANY_NAME = "Suryam’s Dine";
+
+const BASE_URL = "https://api.suryam.com";
+export default BASE_URL;
+
+// 📁 App.js
+
+import BASE_URL, { LOGO_LINK, COMPANY_NAME } from './utils/constants';
+
+console.log(BASE_URL);    // Default export
+console.log(LOGO_LINK);   // Named export
+console.log(COMPANY_NAME); // Named export
+
+
+
+
+FUNDAMENTALS :
+
+Whenever wants to use any JS Expression inside JS always use {}
+{
+    CARD_API.map( (obj,index) => {
+        return <ResCardComponent  data = {obj}/>
+    } )
+}
+
+when sending props always wrap it inside {} as we are using JSX and we want to pass a JS Expression else the props object would consider it as a string.
+
+const ResCardComponent = (props) => { }
+//here the props object wraps everything inside an object
+
+option 1 :
+const ResCardComponent = (obj) => {
+
+    use as obj.data.propertyName
+    
+    OR
+
+    const {data} = obj;
+    then directly use data.propertyName
+}
+
+option 2 : destructuring in the parameter list only
+const ResCardComponent = ({data}) => {
+
+}
+
+note the name of the parameter has to be same as what the argument was been passed.
+
+<h4 className='shop-text'> {props.data?.resName} </h4>
+this is called as optional chaining it goes only if we have that object else doesnt gets executed
+if you don’t use optional chaining and the object doesn’t exist, you will get an error in the console, and in many cases, your React component may crash at runtime.
+
+
+There are 2 types of destructuring 
+1.Array u can give any name const [a,b] = arr;
+the 0 idx values goes in a and the 1 in b
+
+2.Object u have to very particular about the key name which is originally present const[keyName1,keyName2] = obj
+also u can do the name as keyName1:a as alias
+
+
+Vanilla JS is nothing but JS with pure 

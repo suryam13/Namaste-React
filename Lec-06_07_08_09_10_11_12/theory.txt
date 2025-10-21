@@ -947,9 +947,15 @@ export default cartSlice.reducer
 3.In the older version of redux i.e vanilla redux we had to create a copy of state and then return the new we weren't allowed to mutate the state directly but in this redux toolkit we are allowed to direclty mutate the state becuase behind the scenes still redux still does the same thing of creating a copy of the state 
 using the Immer library 
 
-
-
-
-
-
-/***********************************************************  LEC-13  ********************************************************************/
+4.you can also add more properties dynamically later inside your reducers, like this:
+reducers: {
+  addNowPlayingMovies: (state, action) => {
+    state.nowPlayingMovies = action.payload;
+  },
+  setLoading: (state, action) => {
+    state.loading = action.payload;
+  }
+}
+Even if loading was not in initialState, Redux Toolkit (with Immer under the hood) allows you to dynamically add new properties like state.loading.
+Now you could do:
+store.movies.loading // ✅ Access this new field
